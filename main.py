@@ -1,12 +1,13 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-import torchvision.models
+from torchvision.models import densenet121, resnet18
 from torchvision import transforms
 from torchvision.datasets import ImageFolder
 from torch.utils.data import DataLoader
 from CovidNet import CovidNet
 from VGG16 import VGG16
+import numpy as np
 
 # Device configuration
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -30,58 +31,67 @@ train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, nu
 validation_dataset = ImageFolder(root="./data/covid_dataset/validation", transform=transform)
 validation_loader = DataLoader(validation_dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers)
 
+models = ["CovidNet", "DenseNet", "ResNet", "VGG16"]
 
-###### Initialize the model
+for currModel in models:
+    model = CovidNet()
 
-### Use CovidNet
-model = CovidNet()
+    if currModel == "DenseNet":
+        model = densenet121(pretrained=True)
 
-### Use VGG16
-# model = VGG16()
+    elif currModel[0] == "ResNet":
+        model = resnet18(pretrained=True)
+        model.fc = nn.Linear(model.fc.in_features, 3)
 
-### Use DenseNet
-# model = torchvision.models.densenet121(pretrained=True)
+    elif currModel == "VGG16":
+        model = VGG16()
 
-## Adjust the first convolutional layer to accept one channel
-## model.features[0] = nn.Conv2d(1, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
-# model.classifier = nn.Linear(model.classifier.in_features, 3)
+    model.to(device)
 
-### Use ResNet
-# model = torchvision.models.resnet18(pretrained=True)
-## model.conv1 = nn.Conv2d(1, 64, kernel_size=7, stride=2, padding=3, bias=False)
-# model.fc = nn.Linear(model.fc.in_features, 3)
+    print(f"\n\nFOR MODEL {currModel}:")
 
-model.to(device)
+    with open(currModel, "w") as file:
+        # Define loss function and optimizer
+        criterion = nn.CrossEntropyLoss()
+        optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
-# Define loss function and optimizer
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
+        # Train and evaluate the model in each epoch
+        num_epochs = 30
+        accuracyPerEpoch = []
+        for epoch in range(num_epochs):
+            running_loss = 0.0
+            for i, data in enumerate(train_loader, 0):
+                inputs, labels = data
+                optimizer.zero_grad()
+                outputs = model(inputs)
+                loss = criterion(outputs, labels)
+                loss.backward()
+                optimizer.step()
+                running_loss += loss.item()
 
-# Train the model
-num_epochs = 30
-for epoch in range(num_epochs):
-    running_loss = 0.0
-    for i, data in enumerate(train_loader, 0):
-        inputs, labels = data
-        optimizer.zero_grad()
-        outputs = model(inputs)
-        loss = criterion(outputs, labels)
-        loss.backward()
-        optimizer.step()
-        running_loss += loss.item()
-    print(f"Epoch {epoch + 1}, Loss: {running_loss / len(train_loader)}")
+            # Evaluate the model on the test data
+            correct = 0
+            total = 0
+            with torch.no_grad():
+                for data in validation_loader:
+                    images, labels = data
+                    outputs = model(images)
+                    _, predicted = torch.max(outputs, 1)
+                    total += labels.size(0)
+                    correct += (predicted == labels).sum().item()
 
-print("Training finished.")
+            accuracy = 100 * correct / total
+            accuracyPerEpoch.append(accuracy)
 
-# Evaluate the model on the test data
-correct = 0
-total = 0
-with torch.no_grad():
-    for data in validation_loader:
-        images, labels = data
-        outputs = model(images)
-        _, predicted = torch.max(outputs, 1)
-        total += labels.size(0)
-        correct += (predicted == labels).sum().item()
+            print(f"Epoch {epoch + 1}, Loss: {running_loss / len(train_loader)}, Accuracy on the test data: {accuracy}%", file=file)
 
-print(f"Accuracy on the test data: {100 * correct / total}%")
+        # Calculate mean
+        mean_value = np.mean(accuracyPerEpoch)
+
+        # Calculate standard deviation
+        std_deviation = np.std(accuracyPerEpoch)
+
+        print("Mean:", mean_value, file=file)
+        print("Standard Deviation:", std_deviation, file=file)
+
+print("Finished!")
