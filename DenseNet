@@ -1,0 +1,32 @@
+Epoch 1, Loss: 6.747403770685196, Accuracy on the test data: 33.333333333333336%
+Epoch 2, Loss: 0.5543435253202915, Accuracy on the test data: 63.63636363636363%
+Epoch 3, Loss: 0.10642405215185136, Accuracy on the test data: 65.15151515151516%
+Epoch 4, Loss: 0.05216502840448811, Accuracy on the test data: 65.15151515151516%
+Epoch 5, Loss: 0.027165649298694916, Accuracy on the test data: 65.15151515151516%
+Epoch 6, Loss: 0.002533614373533055, Accuracy on the test data: 65.15151515151516%
+Epoch 7, Loss: 0.001955517025635345, Accuracy on the test data: 63.63636363636363%
+Epoch 8, Loss: 0.0009661034273449332, Accuracy on the test data: 62.121212121212125%
+Epoch 9, Loss: 0.0007744932236164459, Accuracy on the test data: 62.121212121212125%
+Epoch 10, Loss: 0.0029083149929647334, Accuracy on the test data: 62.121212121212125%
+Epoch 11, Loss: 0.00047171276855806354, Accuracy on the test data: 62.121212121212125%
+Epoch 12, Loss: 0.01641199053301534, Accuracy on the test data: 63.63636363636363%
+Epoch 13, Loss: 0.003945642599319399, Accuracy on the test data: 65.15151515151516%
+Epoch 14, Loss: 0.0010188765681959921, Accuracy on the test data: 65.15151515151516%
+Epoch 15, Loss: 0.00028898995333292987, Accuracy on the test data: 65.15151515151516%
+Epoch 16, Loss: 0.0014575330715160817, Accuracy on the test data: 65.15151515151516%
+Epoch 17, Loss: 0.0008442434545941069, Accuracy on the test data: 66.66666666666667%
+Epoch 18, Loss: 0.0027612942476480384, Accuracy on the test data: 68.18181818181819%
+Epoch 19, Loss: 0.000668035245325882, Accuracy on the test data: 68.18181818181819%
+Epoch 20, Loss: 0.007659228174816235, Accuracy on the test data: 68.18181818181819%
+Epoch 21, Loss: 0.0003982367688877275, Accuracy on the test data: 68.18181818181819%
+Epoch 22, Loss: 0.00012691887695837067, Accuracy on the test data: 68.18181818181819%
+Epoch 23, Loss: 0.000814136797998799, Accuracy on the test data: 68.18181818181819%
+Epoch 24, Loss: 0.00247272172873636, Accuracy on the test data: 66.66666666666667%
+Epoch 25, Loss: 0.00038821777252451284, Accuracy on the test data: 66.66666666666667%
+Epoch 26, Loss: 0.00039237278451764723, Accuracy on the test data: 66.66666666666667%
+Epoch 27, Loss: 0.0007641913662155275, Accuracy on the test data: 66.66666666666667%
+Epoch 28, Loss: 0.004488353768465458, Accuracy on the test data: 65.15151515151516%
+Epoch 29, Loss: 0.0007813329043528938, Accuracy on the test data: 66.66666666666667%
+Epoch 30, Loss: 0.000547160183032247, Accuracy on the test data: 66.66666666666667%
+Mean: 64.49494949494951
+Standard Deviation: 6.094392357095518
